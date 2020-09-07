@@ -1,0 +1,27 @@
+@import './styles/iconfont';
+
+/* 初始化样式,在微信小程序中不支持*选择器 */
+page,
+view,
+text,
+swiper,
+swiper-item,
+navigator,
+image {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* 主题颜色,通过变量来实现 */
+page {
+    /* 定义主题颜色 */
+    --themeColor: #eb4450;
+
+    /* 定义统一字体的大小; 假设设计稿的大小是375px 因为微信小程序默认大小是750rpx
+        所以此时1px = 375rpx
+                14px = 28rpx
+        此时页面字体的大小就会随屏幕大小等比例缩放;
+    */
+    font-size: 28rpx;
+}
