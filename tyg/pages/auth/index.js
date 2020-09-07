@@ -1,4 +1,4 @@
-// pages/cart/index.js
+// pages/auth/index.js
 Page({
 
   /**
