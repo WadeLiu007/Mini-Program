@@ -13,12 +13,46 @@ page {
 
         .left_menu {
             flex: 2;
-            background-color: blue;
+            .menu_item{
+                display: flex;
+                height: 80rpx;
+                justify-content: center;
+                align-items: center;
+                font-size: 30rpx;
+            }
+        }
+
+        .active{
+            color:var(--themeColor);
+            border-left: 5rpx solid var(--themeColor);
         }
 
         .right_content {
             flex: 5;
-            background-color: red;
+            .goods_group{
+                .goods_title{
+                    height: 80rpx;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    .delimiter{
+                        color:#999;
+                        padding:0 10rpx;
+                    }
+                }
+            }
+            .goods_list{
+                display: flex;
+                flex-wrap: wrap;
+                navigator{
+                    width: 33.33%;
+                    text-align:center;
+                    image{
+                        width: 50%;
+                    }
+                    .goods_name{}
+                }
+            }
         }
     }
 }
