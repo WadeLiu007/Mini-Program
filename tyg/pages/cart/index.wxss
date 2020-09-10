@@ -24,6 +24,20 @@ page {
   border-top: 1px solid currentColor;
   border-bottom: 1px solid currentColor;
 }
+.cart_content .cart_main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.cart_content .cart_main .noGoodsImage {
+  margin-top: 40rpx;
+  width: 80%;
+}
+.cart_content .cart_main .noGoodsText {
+  margin-top: 20rpx;
+  font-size: 40rpx;
+}
 .cart_content .cart_main .cart_item {
   display: flex;
   padding: 10rpx;

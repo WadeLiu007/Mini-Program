@@ -26,6 +26,7 @@ page {
 }
 
 .cart_content {
+
     .cart_title {
         padding: 20rpx;
         font-size: 36rpx;
@@ -35,6 +36,19 @@ page {
     }
 
     .cart_main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        .noGoodsImage {
+            margin-top: 40rpx;
+            width: 80%;
+        }
+        .noGoodsText{
+            margin-top: 20rpx;
+            font-size: 40rpx;
+        }
+
         .cart_item {
             display: flex;
             padding: 10rpx;
@@ -121,6 +135,7 @@ page {
     background-color: #fff;
     display: flex;
     border-top: 1px solid #ccc;
+
     .all_chk_wrap {
         flex: 2;
         display: flex;
@@ -133,6 +148,7 @@ page {
         flex: 5;
         padding-right: 15rpx;
         text-align: right;
+
         .total_price {
             text.total_price_text {
                 color: var(--themeColor);

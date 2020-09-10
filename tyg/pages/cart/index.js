@@ -186,12 +186,12 @@ Page({
         cart[i].checked = !cart[i].checked;
       }
 
-      if(cart[i].checked == false){
-        this.data.allChecked = false;
-      }
+      // if(cart[i].checked == false){
+      //   this.data.allChecked = false;
+      // }
 
     }
-    
+
 
     // 把cart数据重新设置回data中和缓存中;
     this.setData({
@@ -230,7 +230,7 @@ Page({
   },
 
   /* 为了避免上述代码多次重复执行,进行一次封装 */
-  setCart(cart){
+  setCart(cart) {
     if (cart.length > 0) {
       var allChecked = cart.every(item => {
         // console.log(item);
@@ -251,12 +251,106 @@ Page({
       }
     })
 
-
+    wx.setStorageSync("cart", cart);
     this.setData({
       cart,
       allChecked,
       totalPrice,
       totalNum
+    });
+  },
+
+  // 商品全选功能
+  handleItemAllCheck() {
+    // 1.获取data中的数据;
+    let {
+      cart,
+      allChecked
+    } = this.data;
+    // 2.全选按钮取反;
+    allChecked = !allChecked;
+    // 3.遍历购物车中的数组，让其选中状态跟着全选按钮改变;
+    cart.forEach(item => {
+      return item.checked = allChecked;
+    })
+    // 调用上面的setCart函数;执行计算操作;
+    this.setCart(cart);
+  },
+
+  // 编辑购物车商品数量;
+  handleItemNumEdit(e) {
+    // 1、获取自定义属性;
+    let {
+      id,
+      operation
+    } = e.currentTarget.dataset;
+    // 2、获取购物车的数组;
+    let {
+      cart
+    } = this.data;
+    // 3、找到需要修改商品的索引;
+    let index = cart.findIndex(item => item.goods_id === id)
+
+    // 4、判断是否要执行删除;
+    if (cart[index].num === 1 && operation === -1) {
+      // operation===-1表示执行的是减法;
+      wx.showModal({
+        title: '提示',
+        content: '您确定要删除该商品吗？',
+        success: (res) => {
+          // 这边一定要使用箭头函数,否则this指向的是showModal这个对象;
+          if (res.confirm) {
+            cart.splice(index, 1);
+            this.setCart(cart);
+            // console.log(cart);
+          } else if (res.cancel) {
+            console.log('用户点击取消')
+          }
+        }
+      })
+    } else {
+      // 5、进行商品数量修改;
+      cart[index].num += operation;
+      // 6、调用封装好的计算函数;
+      this.setCart(cart);
+    }
+  },
+
+  // 结算;
+  handlePay() {
+    // 1.判断用户是否有添加收货地址;
+    let {
+      address,
+      totalNum
+    } = this.data;
+    if (!address.username) {
+      wx.showToast({
+        title: '您还没有添加收货地址',
+        icon: 'none',
+        duration: 1500,
+        mask: true,
+        success: (result) => {
+          console.log(result);
+        },
+      });
+    }
+
+    // 2.判断用户是否选购了商品;
+    if (totalNum === 0) {
+      wx.showToast({
+        title: '您还没有选购商品哦',
+        icon: 'none',
+        duration: 1500,
+        mask: true,
+        success: (result) => {
+          console.log(result);
+        },
+      });
+    }
+
+    // 3.如果以上两种情况都操作完了 就跳转到支付页面;
+    wx.navigateTo({
+      url: '/pages/pay/index',
     });
   }
 })
