@@ -27,6 +27,7 @@ Page({
     let res = await request({
       url: '/home/swiperdata'
     })
+    
     this.setData({
       swiperList: res.data.message
     })
