@@ -47,11 +47,11 @@ Page({
 
   getCates() {
     request({
-        url: '/categories'
+        url: '/categories'  
       })
       .then(result => {
         this.Cates = result.data.message;
-        console.log(this.Cates);
+        // console.log(this.Cates);
         // 当请求到数据时,就存储到本地存储中;
         wx.setStorageSync('cates', {time:Date.now(),data:this.Cates})
 

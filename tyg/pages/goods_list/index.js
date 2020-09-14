@@ -32,7 +32,9 @@ Page({
 
 
   onLoad: function (options) {
-    this.QueryParams.cid = options.cid;
+    // 后台数据中有cid就使用cid,没有的话重置为空,在使用query参数
+    this.QueryParams.cid = options.cid || '';
+    this.QueryParams.query = options.query || '';
     this.getGoodsList();
   },
 

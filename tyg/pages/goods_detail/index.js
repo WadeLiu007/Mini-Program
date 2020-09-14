@@ -8,7 +8,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    goodsObj: {}
+    goodsObj: {},
+    isCollect: false
   },
 
   // 定义一个全局对象,用来接收数据中的pics
@@ -17,11 +18,18 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onShow: function () {
+
+    // 为了性能优化  onshow可以频繁的来回切换;
+    let pages = getCurrentPages();
+    let currentPage = pages[pages.length - 1];
+    let options = currentPage.options;
+
     let {
       goods_id
     } = options;
-    this.getGoodsDetail(goods_id)
+    this.getGoodsDetail(goods_id);
+
   },
 
   getGoodsDetail(goods_id) {
@@ -31,7 +39,15 @@ Page({
         goods_id
       },
     }).then(result => {
-      // console.log(result);
+      console.log(result);
+      this.goodsInfo = result.data.message;
+
+      // 1、获取缓存中的商品收藏的数组;
+      let collect = wx.getStorageSync('collect') || [];
+      // 2.判断当前商品是否被收藏了;使用some方法：只要有一个值为true则返回true;
+      let isCollect = collect.some(item => item.goods_id === this.goodsInfo.goods_id);
+
+
       this.setData({
         goodsObj: {
           // 只获取这四个数据是因为太多数据没有用到,会造成小程序性能降低;
@@ -40,12 +56,12 @@ Page({
           pics: result.data.message.pics,
           // webp格式的图片iPhone识别不了,可以简单的先做一个正则转换成jpg格式,但最终还是需要后端人员修改
           goods_introduce: result.data.message.goods_introduce.replace(/\.webp/g, '.jpg'),
-          goods_id:result.data.message.goods_id,
-          goods_small_logo:result.data.message.goods_small_logo,
-        }
+          goods_id: result.data.message.goods_id,
+          goods_small_logo: result.data.message.goods_small_logo,
+        },
+        isCollect
       });
 
-      this.goodsInfo = this.data.goodsObj;
     }, )
   },
 
@@ -94,8 +110,40 @@ Page({
       // 改为true,1.5s才能再次添加;
       mask: true,
     });
+  },
+
+  handleCollect() {
+    let isCollect = false;
+    // 1.获取缓存中的收藏数组;
+    let collect = wx.getStorageSync('collect') || [];
+    // 2.查找收藏的数组中是否有商品;
+    let index = collect.findIndex(item => item.goods_id === this.goodsInfo.goods_id);
+    // 3.如果index不等于-1 说明当前商品已经被收藏了;
+    if (index !== -1) {
+      collect.splice(index, 1);
+      isCollect = false;
+      wx.showToast({
+        title: '取消收藏',
+        icon: "success",
+        mask: true
+      })
+    } else {
+      // 否则说明商品还没有被收藏;
+      collect.push(this.goodsInfo);
+      isCollect = true;
+      wx.showToast({
+        title: '收藏成功',
+        icon: "success",
+        mask: true
+      })
+    }
+
+    // 4.把数组存入到缓存中;
+    wx.setStorageSync('collect', collect);
+    // 5.修改data中isCollect的值;
+    this.setData({
+      isCollect
+    })
   }
-
-
 
 })

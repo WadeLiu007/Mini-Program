@@ -162,9 +162,9 @@ Page({
         await openSetting()
       }
       // 调用收获地址api
-      const res2 = await chooseAddress();
-      // console.log(res2);
-      wx.setStorageSync('address', res2)
+      const address = await chooseAddress();
+      // console.log(address);
+      wx.setStorageSync('address', address)
     } catch (error) {
       console.log(error)
     }
@@ -323,7 +323,7 @@ Page({
       address,
       totalNum
     } = this.data;
-    if (!address.username) {
+    if (!address.userName) {
       wx.showToast({
         title: '您还没有添加收货地址',
         icon: 'none',
@@ -333,6 +333,7 @@ Page({
           console.log(result);
         },
       });
+      return ;
     }
 
     // 2.判断用户是否选购了商品;
@@ -346,6 +347,7 @@ Page({
           console.log(result);
         },
       });
+      return ;
     }
 
     // 3.如果以上两种情况都操作完了 就跳转到支付页面;
