@@ -37,7 +37,7 @@
   "compileType": "miniprogram",
   "libVersion": "2.12.2",
   "appid": "wx8ea7e022162f8d11",
-  "projectname": "tyg",
+  "projectname": "ouya",
   "debugOptions": {
     "hidedInDevtools": []
   },
